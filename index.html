@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Trivia</title>
+
+    <!-- <link rel="stylesheet" type="text/css" media="screen" href="assets/css/reset.css"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+
+
+</head>
+
+<body>
+    <div id="container" class="text-center">
+        <section id="intro">
+            <h1>Trivia Game</h1>
+            <button id="start" class="btn btn-default">Start!</button>
+        </section>
+        <section id="timer">
+            Timer
+        </section>
+        <section id="questionDisplay">
+            <h1 id="question">Question</h1>
+            <div class="row row-btn">
+                <button class="answer btn btn-default col-xs-12">answer</button>
+            </div>
+            <div class="row row-btn">
+                <button class="answer btn btn-default col-xs-12">answer</button>
+            </div>
+            <div class="row row-btn">
+                <button class="answer btn btn-default col-xs-12">answer</button>
+            </div>
+            <div class="row row-btn">
+                <button class="answer btn btn-default col-xs-12">answer</button>
+            </div>
+        </section>
+        <section id="remediation">
+            <h1 id="feedback">Feedback</h1>
+            <img id="feedbackImage" src="" />
+        </section>
+        <section id="outro">
+            <h1>Correct <span id="correct"></span></h1>
+            <h1>Incorrect <span id="incorrect"></span></h1>
+            <h1>Time outs <span id="timed-out"></span></h1>
+            <button id="restart" class="btn-default">Restart</button>
+        </section>
+    </div>
+    <script src="assets/javascript/app.js"></script>
+</body>
+
+</html>
