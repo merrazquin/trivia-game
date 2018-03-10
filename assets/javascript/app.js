@@ -1,6 +1,6 @@
 $(function () {
     //constants
-    const QUESTION_TIME = 5000;
+    const QUESTION_TIME = 5;
     const REMEDIATION_TIME = 2000;
    
     // data
@@ -42,6 +42,8 @@ $(function () {
     var correctDisplay = $("#correct");
     var incorrectDisplay = $("#incorrect");
     var timedOutDisplay = $("#timed-out");
+
+    timerDisplay.pietimer({seconds: QUESTION_TIME, color: 'rgba(0, 0, 0, 0.8)', height:40, width:40}, timedOut);
  
     // variables
     var displays = [introDisplay, questionDisplay, remediationDisplay, outro];
@@ -55,9 +57,9 @@ $(function () {
     }
 
     function changeState(activeDisplay, showTimer) {
-        timerDisplay.css("visibility", showTimer ? "visible" : "hidden");
+        showTimer ? timerDisplay.show() : timerDisplay.hide();
         displays.forEach(display => {
-            display.css("visibility", display === activeDisplay ? "visible" : "hidden");
+            display === activeDisplay ? display.show() : display.hide();
         });
     }
 
@@ -76,6 +78,7 @@ $(function () {
     }
 
     function handleAnswer() {
+        timerDisplay.pietimer('pause');
         var isCorrect = $(this).text() == currentQuestion.answer;
         isCorrect ? (questionsCorrect++) : (questionsIncorrect++);
         feedback.text(isCorrect ? "correct" : "incorrect");
@@ -95,8 +98,8 @@ $(function () {
         changeState(questionDisplay, true);
         displayQuestion(triviaData[questionIndex]);
         questionIndex++;
-
-        setTimer(QUESTION_TIME, timedOut);
+        timerDisplay.pietimer('reset');
+        timerDisplay.pietimer('start');
     }
 
     function timedOut() {

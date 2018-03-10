@@ -3,10 +3,6 @@
     margin:10px auto;
 }
 
-#intro{
-
-}
-
 #timer, #questionDisplay, #remediation, #outro {
-    visibility: hidden;
+    display: none;
 }
