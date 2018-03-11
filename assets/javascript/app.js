@@ -74,7 +74,8 @@ $(function () {
     timerDisplay.pietimer({seconds: QUESTION_TIME, color: 'rgba(0, 0, 0, 0.8)', height:40, width:40}, timedOut);
 
     //#region game functions
-    function initGame() { 
+    
+    function initProgressBar() { 
         var numQ = triviaData.length;
         for(var i = 0; i < numQ; i++) {
             progressBar.append("<li style='width:"+Math.floor(100/numQ)+"%'></li>");
@@ -83,12 +84,16 @@ $(function () {
 
     function resetGame() {
         questionsCorrect = questionsIncorrect = questionsUnanswered = questionIndex = 0;
+        
         //reset progress bar
         progressBar.find("li").attr("class", "");
+
+        // start with the intro
         changeState(introDisplay, false);
     }
     
     function nextQuestion() {
+        // if we've run out of questions, end the game
         if(questionIndex == triviaData.length) {
             endGame();
             return;
@@ -96,43 +101,61 @@ $(function () {
 
         //update the progress bar
         progressBar.find("li:nth-child("+(questionIndex+1)+")").attr("class", "active");
-        changeState(questionDisplay, true);
-        displayQuestion(triviaData[questionIndex]);
-        questionIndex++;
+
+        // reset the pie timer
         timerDisplay.pietimer('reset');
         timerDisplay.pietimer('start');
+
+        // display the question 
+        displayQuestion(triviaData[questionIndex]);
+        changeState(questionDisplay, true);
+        
+        questionIndex++;
     }
 
     function displayQuestion(questionObj) {
+        // set the currentQuestion
         currentQuestion = questionObj;
 
+        // update the question copy
         question.text(currentQuestion.question);
 
         // create a copy of the decoys and add the correct answer in a random position
         var answers = currentQuestion.decoys.slice();
         answers.splice(Math.floor(Math.random() * (answers.length+1)), 0, currentQuestion.answer);
 
+        // update the answers copy
         $("button.answer").each(function (index, element) {
             $(element).text(answers[index]);
         });
     }
 
     function handleAnswer() {
+        // pause the pie timer
         timerDisplay.pietimer('pause');
+
+        // determine if the user pressed the correct button
         var isCorrect = $(this).text() == currentQuestion.answer;
+
+        // update stats 
         isCorrect ? (questionsCorrect++) : (questionsIncorrect++);
+        
+        // update feedback & show remediation screen
         feedback.text(isCorrect ? "Correct!" : ("Nope! The correct answer was: " + currentQuestion.answer));
         remediate();
     }
 
     function timedOut() {
+        // update stats
         questionsUnanswered++;
 
+        // update feedback & show remediation screen
         feedback.text("Time's up! The correct answer was: " + currentQuestion.answer);
         remediate();
     }
 
     function remediate() {
+        // update the image and show the remediation screen
         feedbackImage.attr("src", currentQuestion.image);
         changeState(remediationDisplay, true);
 
@@ -141,6 +164,7 @@ $(function () {
     }
 
     function endGame() {
+        // update stats UI, and show outro screen
         correctDisplay.text(questionsCorrect);
         incorrectDisplay.text(questionsIncorrect);
         unansweredDisplay.text(questionsUnanswered);
@@ -161,9 +185,13 @@ $(function () {
         timerID = setTimeout(callback, time)
     }
     
+    // helper function to show/hide correct "screen"
     function changeState(activeDisplay, showTimerAndProgress) {
+        // show/hide timer & progress
         showTimerAndProgress ? timerDisplay.show() : timerDisplay.hide();
         showTimerAndProgress ? progressDisplay.show() : progressDisplay.hide();
+
+        // hide all displays except for active display
         displays.forEach(display => {
             display === activeDisplay ? display.show() : display.hide();
         });
@@ -171,6 +199,6 @@ $(function () {
     //#endregion helper functions
 
     // calls
-    initGame();
+    initProgressBar();
     resetGame();
 });
