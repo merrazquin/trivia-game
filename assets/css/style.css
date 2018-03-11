@@ -111,3 +111,9 @@ body, .jumbotron {
     background: #ff5bc6;
     color: white;
 }
+
+/* fix for bootstrap mobile touch bug */
+.mobileHoverFix:hover,
+.mobileHoverFix.hover{
+    background-position: 0 0px;
+}
