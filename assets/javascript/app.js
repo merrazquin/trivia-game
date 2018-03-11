@@ -1,31 +1,47 @@
 $(function () {
     //#region constants
     const QUESTION_TIME = 5;
-    const REMEDIATION_TIME = 2000;
+    const REMEDIATION_TIME = 3000;
     //#endregion constants
    
     // data
     var triviaData = [
         {
-            question: "Question 1",
-            answer: "Correct answer 1",
-            decoys: ["decoy", "decoy", "decoy"]
+            question: "Who speaks the first line of the series?",
+            answer: "Lorelai",
+            decoys: ["Rory", "Sookie", "Emily"],
+            image: "assets/images/q1.gif",
+            gifDuration: 2240
         },
         {
-            question: "Question 2",
-            answer: "Correct answer 2",
-            decoys: ["decoy", "decoy", "decoy"]
+            question: "Which journalist does Rory idolize?",
+            answer: "Christiane Amanpour",
+            decoys: ["Peter Jennings", "Dan Rather", "Connie Chung"],
+            image: "assets/images/q2.gif",
+            gifDuration: 6240
         },
         {
-            question: "Question 3",
-            answer: "Correct answer 3",
-            decoys: ["decoy", "decoy", "decoy"]
+            question: "What is the name of Babette's cat that dies in Season 1?",
+            answer: "Cinnamon",
+            decoys: ["Sugar", "Sprinkles", "Coffee"],
+            image: "assets/images/q3.gif",
+            gifDuration: 4190
         },
         {
-            question: "Question 4",
-            answer: "Correct answer 4",
-            decoys: ["decoy", "decoy", "decoy"]
+            question: "What does Rory shoplift after her first kiss with Dean?",
+            answer: "cornstarch",
+            decoys: ["lip gloss", "grapes", "toilet paper"],
+            image: "assets/images/q4.gif",
+            gifDuration: 5240
+        },
+        {
+            question: "Who speaks the last line of the series?",
+            answer: "Rory",
+            decoys: ["Lorelai", "Luke", "Michel"],
+            image: "assets/images/q5.gif",
+            gifDuration: 2400
         }
+
     ];
 
     //#region UI elements
@@ -42,7 +58,7 @@ $(function () {
     var outro = $("#outro");
     var correctDisplay = $("#correct");
     var incorrectDisplay = $("#incorrect");
-    var timedOutDisplay = $("#timed-out");
+    var unansweredDisplay = $("#unanswered");
     //#endregion UI elements
  
     //#region variables
@@ -91,26 +107,29 @@ $(function () {
         timerDisplay.pietimer('pause');
         var isCorrect = $(this).text() == currentQuestion.answer;
         isCorrect ? (questionsCorrect++) : (questionsIncorrect++);
-        feedback.text(isCorrect ? "correct" : "incorrect");
+        feedback.text(isCorrect ? "Correct!" : ("Nope! The correct answer was: " + currentQuestion.answer));
         remediate();
     }
 
     function timedOut() {
         questionsUnanswered++;
 
-        feedback.text("Timed out");
+        feedback.text("Time's up! The correct answer was: " + currentQuestion.answer);
         remediate();
     }
 
     function remediate() {
+        feedbackImage.attr("src", currentQuestion.image);
         changeState(remediationDisplay, true);
-        setTimer(REMEDIATION_TIME, nextQuestion);
+
+        // if the currentQuestion has a gifDuration property, use that, otherwise, use REMEDIATION_TIME
+        setTimer(currentQuestion.gifDuration || REMEDIATION_TIME, nextQuestion);
     }
 
     function endGame() {
         correctDisplay.text(questionsCorrect);
         incorrectDisplay.text(questionsIncorrect);
-        timedOutDisplay.text(questionsUnanswered);
+        unansweredDisplay.text(questionsUnanswered);
         changeState(outro, false);
     }
     //#endregion game functions

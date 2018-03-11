@@ -1,3 +1,6 @@
+body {
+    background-color: #5bc5ff;
+}
 .row-btn {
     max-width: 960px;
     margin:10px auto;
