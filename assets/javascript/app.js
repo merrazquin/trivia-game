@@ -177,13 +177,6 @@ $(function () {
     restartBtn.click(() => {resetGame(); nextQuestion();});
 
     $("button.answer").click(handleAnswer);
-
-    $("button").on("touchstart", function(){ 
-        $(this).removeClass("mobileHoverFix");
-    });
-    $("button").on("touchend", function(){ 
-        $(this).addClass("mobileHoverFix");
-    });
     //#endregion listeners
 
     //#region helper functions

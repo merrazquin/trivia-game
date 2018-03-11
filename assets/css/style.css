@@ -30,10 +30,21 @@ body, .jumbotron {
 }
 
 .answer {
-    background-color: #5bc5ff;
-    color: white;
     padding-top: 20px;
     padding-bottom: 20px;
+}
+
+.answer.btn.btn-default,
+.answer.btn.btn-default:focus{
+  background-color:#5bc5ff;
+  color:#fff;
+}
+
+.answer.btn.btn-default:active,
+.answer.btn.btn-default.dropdown-toggle:active,
+.answer.btn.btn-default:hover{
+  background-color:#5bc5ff;
+  color:#fff;
 }
 
 #timer, #questionDisplay, #remediation, #outro {
@@ -110,10 +121,4 @@ body, .jumbotron {
 #progressbar li.active:before, #progressbar li.active:after {
     background: #ff5bc6;
     color: white;
-}
-
-/* fix for bootstrap mobile touch bug */
-.mobileHoverFix:hover,
-.mobileHoverFix.hover{
-    background-position: 0 0px;
 }
