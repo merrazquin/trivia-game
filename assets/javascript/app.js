@@ -55,6 +55,8 @@ $(function () {
     var remediationDisplay = $("#remediation");
     var feedback = $("#feedback");
     var feedbackImage = $("#feedbackImage");
+    var progressDisplay = $("#progress");
+    var progressBar = $("#progressbar");
     var outro = $("#outro");
     var correctDisplay = $("#correct");
     var incorrectDisplay = $("#incorrect");
@@ -72,8 +74,17 @@ $(function () {
     timerDisplay.pietimer({seconds: QUESTION_TIME, color: 'rgba(0, 0, 0, 0.8)', height:40, width:40}, timedOut);
 
     //#region game functions
+    function initGame() { 
+        var numQ = triviaData.length;
+        for(var i = 0; i < numQ; i++) {
+            progressBar.append("<li style='width:"+Math.floor(100/numQ)+"%'></li>");
+        }
+    }
+
     function resetGame() {
         questionsCorrect = questionsIncorrect = questionsUnanswered = questionIndex = 0;
+        //reset progress bar
+        progressBar.find("li").attr("class", "");
         changeState(introDisplay, false);
     }
     
@@ -82,6 +93,9 @@ $(function () {
             endGame();
             return;
         }
+
+        //update the progress bar
+        progressBar.find("li:nth-child("+(questionIndex+1)+")").attr("class", "active");
         changeState(questionDisplay, true);
         displayQuestion(triviaData[questionIndex]);
         questionIndex++;
@@ -96,7 +110,7 @@ $(function () {
 
         // create a copy of the decoys and add the correct answer in a random position
         var answers = currentQuestion.decoys.slice();
-        answers.splice(Math.ceil(Math.random() * answers.length), 0, currentQuestion.answer);
+        answers.splice(Math.floor(Math.random() * (answers.length+1)), 0, currentQuestion.answer);
 
         $("button.answer").each(function (index, element) {
             $(element).text(answers[index]);
@@ -147,8 +161,9 @@ $(function () {
         timerID = setTimeout(callback, time)
     }
     
-    function changeState(activeDisplay, showTimer) {
-        showTimer ? timerDisplay.show() : timerDisplay.hide();
+    function changeState(activeDisplay, showTimerAndProgress) {
+        showTimerAndProgress ? timerDisplay.show() : timerDisplay.hide();
+        showTimerAndProgress ? progressDisplay.show() : progressDisplay.hide();
         displays.forEach(display => {
             display === activeDisplay ? display.show() : display.hide();
         });
@@ -156,5 +171,6 @@ $(function () {
     //#endregion helper functions
 
     // calls
+    initGame();
     resetGame();
 });
