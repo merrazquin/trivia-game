@@ -2,7 +2,7 @@
 ## Overview
 A timed _Gilmore Girls_-themed trivia game.
 
-### [Play the game](https://merrazquin.github.io/Hangman-Game/)
+### [Play the game](https://merrazquin.github.io/trivia-game/)
 
 ## Features
 * Responsive
